@@ -1,3 +1,3 @@
 #ignore all cached files
-
-__pyache__
+*.jpg
+**/__pycache__/
