@@ -99,12 +99,3 @@ for getting The path of folder and file
 <hr>
 <hr>
 <hr>
-
-
-
-
-
-
-
-
-
