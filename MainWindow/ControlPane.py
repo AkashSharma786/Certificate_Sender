@@ -1,7 +1,7 @@
 from tkinter import *
-from Select_Path import Path_Selection
-from Font_and_Color import *
-from Final_Buttons import *
+from MainWindow.Controls.Select_Path import Path_Selection
+from MainWindow.Controls.Font_and_Color import *
+from MainWindow.Controls.Final_Buttons import *
 import openpyxl 
 from PIL import Image, ImageTk, ImageDraw , ImageFont
 from tkinter import font
@@ -40,6 +40,7 @@ class Control_Pane(Frame):
         sheet_column = 1
         path = self.Excel
         name_list = []
+        email_list = []
 
         work_book = openpyxl.load_workbook(path)
         sheet = work_book.active
@@ -47,14 +48,16 @@ class Control_Pane(Frame):
 
         for i in range(1, sheet.max_row + 1 , 1):
             name = sheet.cell(column = sheet_column,  row = i  ).value
+            email = sheet.cell(column = sheet_column +1, row = i).value
             name_list.append(name)
+            email_list.append(email)
         
-        return name_list
+        return (name_list, email_list)
 
     def set_Excel(self, Excel):
         self.Excel = Excel
-        self.NameList = self.Get_Name_List()
-        print(self.NameList)
+        self.NameList, self.email_list = self.Get_Name_List()
+        print(self.NameList, self.email_list)
         
     
     def set_output(self, output):
@@ -85,16 +88,16 @@ class Control_Pane(Frame):
 
         width , height = img.size
 
-        ratio = int(width/self.small_width )
+        ratio = width/self.small_width 
 
         x1, y1, x2, y2 = self.coordinate
 
-        abcissa = x1 * ratio
-        ordinate = y2 * ratio
+        abcissa = int(x1 * ratio)
+        ordinate = int(y2 * ratio)
         self.abcissa = abcissa
         self.ordinate = ordinate
 
-        __font = ImageFont.truetype(font= 'C:/Users/akash/Desktop/Certificate Naming Project/Font/Lato-Regular.ttf' , size= sys_size*5)
+        __font = ImageFont.truetype(font= 'Font\Montserrat-Bold.ttf' , size= sys_size*5)
         
         print("One Image Generated")
 
@@ -107,7 +110,7 @@ class Control_Pane(Frame):
     def Generate_All(self):
 
         sys_size = int(self._font[2])
-        __font = ImageFont.truetype(font= 'C:/Users/akash/Desktop/Certificate Naming Project/Font/Lato-Regular.ttf' , size= sys_size*5)
+        __font = ImageFont.truetype(font= 'Font\Montserrat-Bold.ttf' , size= sys_size*5)
         
         for name in self.NameList:
             img = Image.open(self.certificate)
@@ -115,7 +118,7 @@ class Control_Pane(Frame):
             I1.text((self.abcissa, self.ordinate), text= name ,fill= self._font[0], font= __font)
             img.save(self.output+ '/' + name + '.jpg')
         
-        print('Done')
+        
 
 
 
