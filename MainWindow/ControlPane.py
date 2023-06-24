@@ -83,7 +83,68 @@ class Control_Pane(Frame):
         self.coordinate = coordinate
         self.small_width = small_width
         self.small_height = small_height
+        
+
+
         print(coordinate)
+    
+
+    def paste_png(self, file_path):
+
+        image1 = Image.open(self.Temp_Folder)
+        image2 = Image.open(file_path)
+
+        
+        width , height = image1.size
+        self.ratio = width/self.small_width
+
+        x1 = int(self.coordinate[0]*self.ratio)
+        y1 = int(self.coordinate[1]*self.ratio)
+        x2 = int(self.coordinate[2]*self.ratio)
+        y2 = int(self.coordinate[3]*self.ratio)
+
+        box_width = x2 -x1
+        box_height = y2 -y1
+
+        img2_width , img2_height = image2.size
+
+        max_size = max(img2_width, img2_height)
+
+        img2_ratio = img2_width/ img2_height
+
+        new_img_max = int(min(box_width, box_height)*img2_ratio)
+
+        img2_width = int(img2_width * new_img_max /max_size)
+        img2_height = int(img2_height * new_img_max /max_size)
+
+        print(box_width, box_height)
+        print(img2_width, img2_height)
+
+        image2 = image2.resize((img2_width, img2_height))
+
+        image1 = image1.convert('RGBA')
+        image2 = image2.convert('RGBA')
+
+        image1.paste(image2,(x1, y1), image2)
+        image1 = image1.convert('RGB')
+
+
+
+        output_path = self.Temp_Folder.split('/')
+
+        
+           
+        print("             ",output_path)
+
+        output_path = output_path[-1]
+        print(output_path)
+        
+
+        image1.save(output_path)
+
+
+        self.master.preview_frame.RenderImage(output_path)
+        
 
     def Generate_1_image(self, text = None):
         print(self.Temp_Folder)
