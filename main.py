@@ -20,7 +20,7 @@ class ParentWindow(Tk):
         preview_frame = Preview_Frame(self)
 
         control_frame.grid(row= 0, column= 0, padx= 2, pady= 2)
-        preview_frame.grid(row= 0, column= 1, padx= 2, pady= 2)
+        preview_frame.grid(row= 0, column= 1)
 
         self.control_frame = control_frame
         self.preview_frame = preview_frame

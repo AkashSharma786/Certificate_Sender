@@ -1,108 +1,203 @@
-
-import tkinter as tk
+from tkinter import *
+from tkinter import ttk
+from PIL import ImageFont, Image, ImageDraw
 from tkinter import font
+import os
+from tkinter.colorchooser import askcolor
+from PIL import ImageTk
+import shutil
 
-class Font_And_Color(tk.Frame):
+class Font_And_Color(Toplevel):
 
-
-       
-
-      
-    def ChangeFont(self, red, green , blue, font_name, font_weight, font_size ):
-        if(font_size == ''):
-            font_size = '12'
-        
-        r = hex(int(red))[2:]  
-        g = hex(int(green))[2:]  
-        b = hex(int(blue))[2:]
-
-        if(len(r) == 1 ):
-            r= '0'+r
-        if(len(g) == 1 ):
-            g= '0'+ g
-        if(len(b) == 1 ):
-            b= '0'+ b
-
-        color = '#' + r + g + b
-
-        self.Welcome.config(font=(font_name, int(font_size), font_weight), fg=color)
-
-        self.master.set_font((color, font_name, font_size, font_weight))
-        
-        
-        return (color, font_name, font_size, font_weight)
-        
-
-        
-
-    def __init__(self, parent):
-        tk.Frame.__init__(self, parent)
+    def __init__(self, parent = None, generic_text = False):
         super().__init__(parent)
+        self.generic_text = generic_text
+        self.parent = parent
+        self.geometry('400x450')
+        self.minsize(width= 400, height= 450)
+        self.protocol("WM_DELETE_WINDOW",self.close)
+        self.font_list()
+        self.font_and_color()
+
+        if(generic_text == False):
+            self.Text_Input()
+        else:
+            self.Starting_index()
         
-        global Font_preview
+        print(self.generic_text)
 
 
-        font_and_color = tk.LabelFrame(self, width= 340, height= 200, pady= 5)
-        font_and_color.grid( padx= 5, pady= 5)
-
-        Font_Selection = tk.LabelFrame(font_and_color,height=  50, width= 338, pady=3)
-        Font_preview = tk.LabelFrame(font_and_color, height= 80, width= 338, pady= 3)
-        Color_Selection = tk.LabelFrame(font_and_color, height= 110, width= 338, pady= 3)
-
-
-        Font_Selection.grid(row = 0, column = 0, padx = 2, pady = 2, sticky= 'EW')
-        Font_preview.grid(column= 0, row= 1, pady=2, padx= 2)
-        Color_Selection.grid(row= 2, column= 0, pady=2, padx= 2)
-
-        Welcome = tk.Label(Font_preview, text= "Hello World!")
-        Welcome.grid()
-        self.Welcome = Welcome
-
-
-        global fonts
-        fonts = list(font.families())
-        FONT = tk.StringVar()
-        FONT.set(fonts[0])
-
-        weg = tk.StringVar()
-        weg.set('normal')
-
-       
-
-        font_label = tk.Label(Font_Selection, text= "Select Font", width= 25)
-        sizeLabel = tk.Label(Font_Selection, text= "Size" , width= 5 )
-        weight = tk.Label(Font_Selection, text= "Weight", width= 5)
-        font_Name  = tk.OptionMenu(Font_Selection,FONT,  *fonts )
-        font_size  = tk.Entry(Font_Selection, width= 8  )
-        font_weight  = tk.OptionMenu(Font_Selection,weg,'normal', 'bold' )
-        
-        
-        font_label.grid(row= 0, column= 0,sticky= 'W' , padx= 2)
-        sizeLabel.grid(row= 0, column= 1, padx= 2)
-        weight.grid(row= 0, column= 2, sticky= 'E',padx= 2)
-        font_Name.grid(row=1, column= 0, sticky= 'EW', padx= 2)
-        font_size.grid(row=1, column=1, padx= 2)
-        font_weight.grid(row=1, column= 2, sticky= 'ES', padx=2)
-
+        self.font_preview()
+        self.main_but()
 
 
         
-        
-        Red = tk.Scale(Color_Selection, orient= 'horizontal', from_= 0, to= 255, cursor= 'dot' , length= 330, showvalue= 0 , width= 10, troughcolor= 'red')
-        Green = tk.Scale(Color_Selection, orient= 'horizontal', from_= 0, to= 255, cursor= 'dot' , length= 330, showvalue= 0  , width= 10, troughcolor= 'green')
-        Blue = tk.Scale(Color_Selection, orient= 'horizontal', from_= 0, to= 255, cursor= 'dot' , length= 330 , showvalue= 0 , width= 10, troughcolor= 'blue')
-        getPreview = tk.Button(Color_Selection, text= "Show PreView", command= lambda: self.ChangeFont(Red.get(), Green.get(), Blue.get(), FONT.get(), weg.get() , font_size.get()))
+    def Text_Input(self):
 
-        self.font_style = self.ChangeFont(Red.get(), Green.get(), Blue.get(), FONT.get(), weg.get() , font_size.get())
-        
+        x_pad = 5
+        y_pad = 5
+        Text_Input_Frame = LabelFrame(self, width= 380, height= 70)
+        Text_Input_Frame.grid()
 
-        
-        Red.grid(row= 1, column= 0)
-        Green.grid(row= 2, column= 0)
-        Blue.grid(row= 3,column=  0)
-        getPreview.grid(row= 4, column= 0)
+        single_line_text_label = Label(Text_Input_Frame, text= 'sentence')
+        self.single_line_text_Entry = Entry(Text_Input_Frame, width= 50)
+        Multi_line_text_Button = Button(Text_Input_Frame, width= 5, height= 3, text= 'Text')
+
+        single_line_text_label.grid(row= 0, column= 0, padx= x_pad , pady= y_pad)
+        self.single_line_text_Entry.grid(row= 1, column= 0, padx= x_pad, pady= y_pad)
+        Multi_line_text_Button.grid(row= 0, column= 1, rowspan= 2, columnspan= 1, padx= x_pad)
+    
+    
+    def Starting_index(self):
+        index_Frame = LabelFrame(self, width= 380, height= 30)
+        index_Frame.grid()
+
+        x_pad = 8
+        y_pad = 2
+
+        text_label = Label(index_Frame, text= "Index of Entry in Spread Sheet")
+        text_label.grid(row= 0, column= 0)
+
+        row_label = Label(index_Frame , text= 'Row')
+        row_label.grid(row= 0, column= 1, padx= x_pad, pady= y_pad)
+
+        self.row_Entry = Entry(index_Frame , width= 5)
+        self.row_Entry.grid(row= 0, column= 2, padx= x_pad, pady= y_pad)
+
+        column_label = Label(index_Frame , text= 'column')
+        column_label.grid(row= 0, column= 3, padx= x_pad, pady= y_pad)
+
+        self.column_Entry = Entry(index_Frame , width= 5)
+        self.column_Entry.grid(row= 0, column= 4, padx= x_pad, pady= y_pad)
 
 
+
+
+
+    def set_color(self):
+        self.color = askcolor()[1]
+        print(self.color)
 
     def start(self):
         self.mainloop()
+
+
+    def close(self):
+        self.destroy()
+        self = None
+
+    def font_list(self):
+        self.font_folder = 'Font'
+        fonts = os.listdir(self.font_folder)
+        self.font_list = fonts
+    
+    def font_and_color(self):
+        x_pad = 10
+        y_pad = 3
+        
+
+        font_frame = Frame(self, width= 350)
+        font_frame.grid(padx= x_pad, pady= y_pad)
+
+        font_box_label = Label(font_frame, text= 'Select a Font')
+        font_box_label.grid(row= 0, column= 0, padx= x_pad, pady= y_pad)
+        self.font_box = ttk.Combobox(font_frame, values= self.font_list , width= 35)
+        self.font_box.set("select and option")
+        self.font_box.grid(row= 1, column= 0, padx= x_pad, pady= y_pad)
+
+
+        font_size_label = Label(font_frame, text= 'size')
+        font_size_label.grid(row= 0, column= 1 , padx= x_pad, pady= y_pad)
+
+        self.font_size = Entry(font_frame , width= 5)
+        self.font_size.grid(row= 1, column= 1, padx= x_pad, pady= y_pad)
+
+
+
+        color_btn = Button(font_frame,text= 'color', width= 8, height= 3, command= self.set_color)
+        color_btn.grid(column= 2, row= 0, rowspan= 2, columnspan= 1, padx= x_pad, pady= y_pad, sticky= 'N')
+
+    def font_preview(self):
+        preview_Frame= Frame(self)
+        preview_Frame.grid( )
+
+        self.preview_label = Label(preview_Frame)
+        self.preview_label.grid()
+    
+    def text_preview(self):
+        family = self.font_box.get()
+        size = int(self.font_size.get())
+        self.master.set_font((family, size, self.color))
+
+        if(self.generic_text == True):
+            self.master.Set_Row_and_colunmn( int(self.row_Entry.get()), int(self.column_Entry.get()))
+            self.master.Get_Name_List()
+        
+
+        print(self.font_size.get())
+        print(self.font_box.get())
+        print(self.color)
+
+        __font = ImageFont.truetype(font= (self.font_folder + '/' + family), size= size )
+
+        img = Image.open('bgimg.jpg')
+
+        I1 = ImageDraw.ImageDraw(img)
+        I1.text(xy= (50, 50), text='Hello World', fill= self.color, font= __font)
+
+        self.photo = ImageTk.PhotoImage(img)
+        self.preview_label.config(image= self.photo)
+        
+
+
+
+    
+    def main_but(self):
+        x_pad = 5
+        y_pad = 2
+        but_width = 11
+        but_height = 3
+        btn_frame = Frame(self, width= 390, height= 40, border= 1)
+        btn_frame.grid()
+
+        preview = Button(btn_frame, text= 'preview', width= but_width, height= but_height, command= self.text_preview)
+        preview.grid(row= 0, column= 0, padx= x_pad, pady= y_pad)
+
+        select_position = Button(btn_frame, text= 'select_position', width= but_width, height= but_height, command= lambda: self.master.master.preview_frame.Create_Rectangle())
+        select_position.grid(row= 0, column= 1, padx= x_pad, pady= y_pad)
+
+        apply = Button(btn_frame, text= 'apply', width= but_width, height= but_height, command= self.apply_font)
+        apply.grid(row= 0, column= 2, padx= x_pad, pady= y_pad)
+        
+        Done = Button(btn_frame, text= 'Done', width= but_width, height= but_height , command= self.Done)
+        Done.grid(row= 0, column= 3, padx= x_pad, pady= y_pad)
+
+    
+
+    def apply_font(self):
+        if(self.generic_text == False):
+            self.master.Generate_1_image( self.single_line_text_Entry.get())
+        else:
+            self.master.Generate_1_image()
+
+    def Done(self):
+
+        
+
+        
+        if(self.generic_text == True):
+            
+            self.master.Generate_All()
+        else:
+             shutil.copy('Background.jpg', 'PlainImage/')
+        
+        self.master.Temp_Folder = 'PlainImage/Background.jpg'
+
+        self.close()
+        
+
+
+
+        
+
+    

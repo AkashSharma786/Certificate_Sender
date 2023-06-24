@@ -6,9 +6,9 @@ class Preview_Frame(Frame):
     def __init__(self, parent ):
         Frame.__init__(self, parent)
         super().__init__(parent)
-        self.Wrap = LabelFrame(self, padx= 10, pady= 10, width= 600, height= 600 )
+        self.Wrap = LabelFrame(self, width= 602, height= 602 )
         self.Wrap.grid()
-        self.Img_Canva = Canvas(self.Wrap, width= 600, height=  600)
+        self.Img_Canva = Canvas(self.Wrap, width= 601, height=  601)
         self.Img_Canva.grid()
 
         self.new_width = 600
@@ -27,8 +27,10 @@ class Preview_Frame(Frame):
         width, height = img.size
         max_size = max(width, height)
         if max_size > 600:
-            self.new_width = int(width * 600 / max_size)
-            self.new_height = int(height * 600 / max_size)
+            self.new_width = int(round(width * 600 / max_size))
+            self.new_height = int(round(height * 600 / max_size))
+            print(width, height)
+            print(self.new_width, self.new_height)
             img = img.resize((self.new_width, self.new_height), Image.ANTIALIAS)
         
         photo = ImageTk.PhotoImage(img)

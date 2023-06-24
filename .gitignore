@@ -1,2 +1,4 @@
 #ignore all cached files
 **/__pycache__/
+
+*.ttf
