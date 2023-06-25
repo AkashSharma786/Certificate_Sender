@@ -38,20 +38,27 @@ class Final_Buttons( Frame ):
     
     def Convert_PDF(self):
         output = self.master.output
+        
 
         Image_list = os.listdir(output)
 
         for image in Image_list:
-            img_path = output + '/' +image
-            pdf_path = output+ '/' + image[:-4]+ '.pdf'
+            if(image[-1] == 'g'):
 
-            img = Image.open(img_path)
-            pdf_bytes = img2pdf.convert(img.filename)
+                print(image)
+                img_path = output + '/' +image
+                pdf_path = output+ '/' + image[:-4]+ '.pdf'
+                print(pdf_path)
 
-            file = open(pdf_path, 'wb')
-            file.write(pdf_bytes)
-            img.close()
-            file.close()
+                
+
+                img = Image.open(img_path)
+                pdf_bytes = img2pdf.convert(img.filename)
+
+                file = open(pdf_path, 'wb')
+                file.write(pdf_bytes)
+                img.close()
+                file.close()
 
 
 

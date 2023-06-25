@@ -128,9 +128,9 @@ class EmailEditor(Toplevel):
             with open(file_path, mode= 'rb') as attach_file_path:
                 data = attach_file_path.read()
                 if(self.r.get() == '.pdf'):
-                    en.add_attachment(data, maintype = 'pdf', subtype = 'pdf')
+                    en.add_attachment(data, maintype = 'PDF', subtype = 'pdf', filename = name_list[i]+ '.pdf')
                 else:
-                    en.add_attachment(data , maintype = 'image', subtype = 'jpeg') 
+                    en.add_attachment(data , maintype = 'image', subtype = 'jpeg', filename = name_list[i] + '.jpg') 
 
             try:
                 with  smtplib.SMTP_SSL('smtp.gmail.com',465)  as server:   
