@@ -91,6 +91,7 @@ class Control_Pane(Frame):
 
     def paste_png(self, file_path):
 
+        print(self.Temp_Folder)
         image1 = Image.open(self.Temp_Folder)
         image2 = Image.open(file_path)
 
@@ -130,23 +131,18 @@ class Control_Pane(Frame):
 
 
 
-        output_path = self.Temp_Folder.split('/')
-
-        
-           
-        print("             ",output_path)
-
-        output_path = output_path[-1]
-        print(output_path)
+   
+   
         
 
-        image1.save(output_path)
+        image1.save('Background.jpg')
 
 
-        self.master.preview_frame.RenderImage(output_path)
+        self.master.preview_frame.RenderImage('Background.jpg')
         
 
     def Generate_1_image(self, text = None):
+        print(self.Temp_Folder)
         print(self.Temp_Folder)
         print(self.Excel)
         print(self.output)
@@ -157,6 +153,7 @@ class Control_Pane(Frame):
         sys_size = int(self._font[1])
         color = self._font[2]
         img = Image.open(self.Temp_Folder)
+
 
         width , height = img.size
 
@@ -184,20 +181,13 @@ class Control_Pane(Frame):
         draw.text((abcissa, self.ordinate),text= text,fill= self._font[2],  font=__font, align= 'center'  )
 
         
-        output_path = self.Temp_Folder.split('/')
 
         
-           
-        print("             ",output_path)
 
-        output_path = output_path[-1]
-        print(output_path)
-        
-
-        img.save(output_path)
+        img.save('Background.jpg')
 
 
-        self.master.preview_frame.RenderImage(output_path)
+        self.master.preview_frame.RenderImage('Background.jpg')
 
     def Generate_All(self):
 

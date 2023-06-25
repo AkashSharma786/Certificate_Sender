@@ -6,8 +6,10 @@ import os
 from tkinter.colorchooser import askcolor
 from PIL import ImageTk
 import shutil
+from MainWindow.Controls.Text_Box import text_box
 
 class Font_And_Color(Toplevel):
+
 
     def __init__(self, parent = None, generic_text = False):
         super().__init__(parent)
@@ -18,6 +20,8 @@ class Font_And_Color(Toplevel):
         self.protocol("WM_DELETE_WINDOW",self.close)
         self.font_list()
         self.font_and_color()
+        self.textbox = None
+        self.text = ''
 
         if(generic_text == False):
             self.Text_Input()
@@ -41,11 +45,21 @@ class Font_And_Color(Toplevel):
 
         single_line_text_label = Label(Text_Input_Frame, text= 'sentence')
         self.single_line_text_Entry = Entry(Text_Input_Frame, width= 50)
-        Multi_line_text_Button = Button(Text_Input_Frame, width= 5, height= 3, text= 'Text')
+        Multi_line_text_Button = Button(Text_Input_Frame, width= 5, height= 3, text= 'Text', command= self.getText)
 
         single_line_text_label.grid(row= 0, column= 0, padx= x_pad , pady= y_pad)
         self.single_line_text_Entry.grid(row= 1, column= 0, padx= x_pad, pady= y_pad)
         Multi_line_text_Button.grid(row= 0, column= 1, rowspan= 2, columnspan= 1, padx= x_pad)
+    
+
+    def getText(self):
+        
+        
+        if(self.textbox is None or not self.textbox.winfo_exists()):
+            
+            self.textbox = text_box(self)
+            if(self.text != ''):
+                self.textbox.box.insert(1.0, self.text)
     
     
     def Starting_index(self):
@@ -143,7 +157,7 @@ class Font_And_Color(Toplevel):
         img = Image.open('bgimg.jpg')
 
         I1 = ImageDraw.ImageDraw(img)
-        I1.text(xy= (50, 50), text='Hello World', fill= self.color, font= __font)
+        I1.text(xy= (50, 50), text='Sample Text', fill= self.color, font= __font)
 
         self.photo = ImageTk.PhotoImage(img)
         self.preview_label.config(image= self.photo)
@@ -176,7 +190,10 @@ class Font_And_Color(Toplevel):
 
     def apply_font(self):
         if(self.generic_text == False):
-            self.master.Generate_1_image( self.single_line_text_Entry.get())
+            if(self.text == ''):
+                self.master.Generate_1_image( self.single_line_text_Entry.get())
+            else:
+                self.master.Generate_1_image(self.text)
         else:
             self.master.Generate_1_image()
 

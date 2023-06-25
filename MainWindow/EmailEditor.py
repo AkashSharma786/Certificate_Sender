@@ -10,7 +10,7 @@ class EmailEditor(Toplevel):
     def __init__(self, parent = None):
         super().__init__(parent)
         
-        self.geometry('600x630')
+        self.geometry('600x650')
         
 
         self.CreateInputFrame()
@@ -39,10 +39,20 @@ class EmailEditor(Toplevel):
         x_pad = 5
         y_pad = 2
         entry_width = 35
-        
 
+        
+        self.r = StringVar()
+        self.r.set('.pdf')
         input = Frame(self,  padx= 2,  pady= 2 , border= 0)
         input.pack(padx= 2, pady= 2)
+
+        radio1 = Radiobutton(input, text= 'Attach PDF', variable= self.r , value= '.pdf' )
+        radio2 = Radiobutton(input, text= 'Attach Image', variable= self.r , value= '.jpg' )
+
+        radio1.grid(row= 0, column= 0)
+        radio2.grid(row= 0, column= 1)
+
+
         sender_Label = Label(input, text= "Enter Senders Email", border= 0,width= 20 , font= self.__font)
         sender_password_label = Label(input, text= "Enter Senders Password" , border= 0, width= 20, font= self.__font)
         Subject_label = Label(input, text=  "Subject" , border= 0, width= 60, font= self.__font, anchor= 'w')
@@ -53,14 +63,14 @@ class EmailEditor(Toplevel):
 
 
 
-        sender_Label.grid(row= 0, column= 0, padx= x_pad, pady= y_pad)
-        self.sender_Email.grid(row= 1, column= 0 , padx= x_pad, pady= y_pad)
+        sender_Label.grid(row= 1, column= 0, padx= x_pad, pady= y_pad)
+        self.sender_Email.grid(row= 2, column= 0 , padx= x_pad, pady= y_pad)
 
-        sender_password_label.grid(row= 0, column= 1 , padx= x_pad, pady= y_pad)
-        self.sender_password_Entry.grid(row= 1, column= 1, padx= x_pad, pady= y_pad)
+        sender_password_label.grid(row= 1, column= 1 , padx= x_pad, pady= y_pad)
+        self.sender_password_Entry.grid(row= 2, column= 1, padx= x_pad, pady= y_pad)
 
-        Subject_label.grid(row= 2, columnspan= 2 , padx= x_pad, pady= y_pad)
-        self.Subject_Entry.grid(row= 3, columnspan=2, padx= x_pad, pady= y_pad)
+        Subject_label.grid(row= 3, columnspan= 2 , padx= x_pad, pady= y_pad)
+        self.Subject_Entry.grid(row= 4, columnspan=2, padx= x_pad, pady= y_pad)
         
     def CreateTextBox(self):
 
@@ -113,10 +123,14 @@ class EmailEditor(Toplevel):
             en['subject'] = self.subject
             en.set_content(self.email_body)
 
-            file_path = 'Output' + '/' + name_list[i] + '.jpg'
-            with open(file_path, mode= 'rb') as image_path:
-                image_data = image_path.read()
-                en.add_attachment(image_data , maintype = 'image', subtype = 'jpeg') 
+            file_path = 'Output' + '/' + name_list[i] + self.r.get()
+
+            with open(file_path, mode= 'rb') as attach_file_path:
+                data = attach_file_path.read()
+                if(self.r.get() == '.pdf'):
+                    en.add_attachment(data, maintype = 'pdf', subtype = 'pdf')
+                else:
+                    en.add_attachment(data , maintype = 'image', subtype = 'jpeg') 
 
             try:
                 with  smtplib.SMTP_SSL('smtp.gmail.com',465)  as server:   
