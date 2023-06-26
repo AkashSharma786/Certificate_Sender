@@ -6,9 +6,12 @@ class Preview_Frame(Frame):
     def __init__(self, parent ):
         Frame.__init__(self, parent)
         super().__init__(parent)
-        self.Wrap = LabelFrame(self, width= 602, height= 602 )
+        self.config(bg= '#000000')
+
+        
+        self.Wrap = LabelFrame(self, width= 600, height= 600 )
         self.Wrap.grid()
-        self.Img_Canva = Canvas(self.Wrap, width= 601, height=  601)
+        self.Img_Canva = Canvas(self.Wrap, width= 600, height=  600, bg= '#1e1e1e')
         self.Img_Canva.grid()
 
         self.new_width = 600

@@ -11,39 +11,49 @@ class AddPng(Toplevel):
         if(parent != None):
             self.parent = parent
         
+        self.label_bg= '#2d2d32'
+        self.btn_background = '#007acc'
+        self.Entry_bg = '#2e3a3b'
+        self.ffg = '#ffffff'
+
+        
         self.geometry('400x400')
+        self.config(bg= self.label_bg )
 
         x_pad = 10
         y_pad = 5
 
-        png_path_frame = LabelFrame(self, text= 'Select PNG Image', )
-        png_path_frame.grid(padx= x_pad)
+        png_path_frame = LabelFrame(self, text= 'Select PNG Image', bg= self.label_bg , fg= self.ffg, relief= 'flat')
+        png_path_frame.grid( row = 0, column= 0, padx= x_pad)
 
-        path_input = Entry(png_path_frame, width= 45)
+        path_input = Entry(png_path_frame, width= 45, bg= self.Entry_bg, fg= self.ffg)
         path_input.grid(row= 0, column= 0, padx= x_pad, pady= y_pad)
 
-        path_input_btn = Button(png_path_frame, text= 'Get Pnge', command= lambda : self.AskPath('image', '*.png', path_input))
+        path_input_btn = Button(png_path_frame, text= 'Get Logo', bg= self.btn_background, fg= self.ffg, command= lambda : self.AskPath('image', '*.png', path_input))
         path_input_btn.grid(row= 0, column= 1, padx= x_pad, pady= y_pad)
 
 
 
-        png_frame = LabelFrame(self)
-        png_frame.grid()
+        png_frame = LabelFrame(self,  width= 300, height= 300, bg= self.label_bg, fg= self.ffg, relief= 'flat')
+        png_frame.grid(row= 1, column= 0)
+        png_frame.pack_propagate(0)
 
-        self.png_label = Label(png_frame, )
-        self.png_label.grid(row = 0, column= 0)
+        self.png_label = Label(png_frame, bg= self.label_bg, fg= self.ffg)
+        self.png_label.pack(expand= 1)
 
 
-        btn_frame = Frame(self)
+        btn_frame = Frame(self, bg= self.label_bg)
         btn_frame.grid(padx= x_pad , pady= y_pad)
 
-        Position = Button(btn_frame, text= 'Position', command= self.master.master.preview_frame.Create_Rectangle)
+        but_width = 13
+
+        Position = Button(btn_frame, text= 'Position', bg= self.btn_background, fg= self.ffg, width= but_width,  command= self.master.master.preview_frame.Create_Rectangle)
         Position.grid(row= 0, column= 0, padx= x_pad, pady= y_pad)
 
-        Apply = Button(btn_frame, text= 'Apply', command= lambda: self.master.paste_png(self.File_Path))
+        Apply = Button(btn_frame, text= 'Apply' , bg= self.btn_background, fg= self.ffg , width= but_width,  command= lambda: self.master.paste_png(self.File_Path))
         Apply.grid(row= 0, column= 1, padx= x_pad, pady= y_pad)
 
-        Done = Button(btn_frame, text= 'Done', command= self.Done)
+        Done = Button(btn_frame, text= 'Done' , bg= '#129d00', fg= self.ffg , width= but_width,  command= self.Done)
         Done.grid(row= 0, column= 2, padx= x_pad, pady= y_pad)
 
 

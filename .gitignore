@@ -2,3 +2,7 @@
 **/__pycache__/
 
 *.ttf
+dist/
+build/
+venv/
+main.spec

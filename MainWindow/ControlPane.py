@@ -14,17 +14,27 @@ class Control_Pane(Frame):
     def __init__(self, parent = None ):
         Frame.__init__(self, parent)
         super().__init__(parent)
-
+        self.config(bg= '#2d2d32')
 
 
         Edit_button = EditButtons(self)
         path_selection = Path_Selection(self)
         final_but = Final_Buttons(self)
 
+        self.response = Label(self, text= ' ', font= (font.Font(family= 'arial', size= 20, weight= 'bold')), fg= 'white', bg= '#2d2d32', width= 15, height= 5)
+        
 
-        path_selection.grid(row= 0, column= 0)
-        Edit_button.grid(row= 1, column= 0)
-        final_but.grid(row=2, column= 0)
+        
+        
+        x_pad = 3
+        y_pad = 4
+
+
+        path_selection.grid(row= 0, column= 0, padx= x_pad, pady= y_pad)
+        Edit_button.grid(row= 1, column= 0, padx= x_pad)
+        final_but.grid(row=2, column= 0, padx= x_pad, pady= y_pad)
+
+        self.response.grid(row= 3, column= 0)
 
         self.Edit_button = Edit_button
         self.path_selection = path_selection
@@ -43,6 +53,7 @@ class Control_Pane(Frame):
 
 
     def Get_Name_List(self):
+        print('name list generated')
         
         path = self.Excel
         name_list = []
@@ -52,7 +63,7 @@ class Control_Pane(Frame):
         sheet = work_book.active
 
 
-        for i in range(self.sheet_row, sheet.max_row + 1 , 1):
+        for i in range(self.sheet_row, sheet.max_row  , 1):
             name = sheet.cell(column = self.sheet_column,  row = i  ).value
             email = sheet.cell(column = self.sheet_column +1, row = i).value
             name_list.append(name)
@@ -190,9 +201,13 @@ class Control_Pane(Frame):
         self.master.preview_frame.RenderImage('Background.jpg')
 
     def Generate_All(self):
+        pass
 
         sys_size = int(self._font[1])
+        print(sys_size)
         __font = ImageFont.truetype(font= self.Font_folder + '/' + self._font[0] , size= int(sys_size*self.ratio))
+        print(__font)
+        print(self.NameList)
         
         for name in self.NameList:
             img = Image.open(self.Temp_Folder)
@@ -200,6 +215,7 @@ class Control_Pane(Frame):
             I1.text((self.abcissa, self.ordinate), text= name ,fill= self._font[2], font= __font)
 
             img.save(self.output+ '/' + name + '.jpg')
+            
         
         
 

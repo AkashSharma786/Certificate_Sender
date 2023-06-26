@@ -12,16 +12,21 @@ class EditButtons(Frame):
         super().__init__(parent)
         self.parent = parent
 
-        x_pad = 20
+        x_pad = 3
         y_pad = 5
+        wide = 14
+        self.config(bg= '#2d2d32')
+        btn_background = '#007acc'
 
-        self.add_text = Button(self, text= 'Add Text', command= self.text_edit_window)
-        self.add_name = Button(self, text = 'add Name', command= self.name_edit_window)
-        self.add_png = Button(self, text= 'Add Png', command= self.png_window)
+        btn_fg = '#ffffff'
+
+        self.add_text = Button(self, text= 'Add Text', width= wide, bg= btn_background, fg= btn_fg,  command= self.text_edit_window)
+        self.add_name = Button(self, text = 'add Name', width= wide, bg= btn_background, fg= btn_fg, command= self.name_edit_window)
+        self.add_png = Button(self, text= 'Add Png', width= wide, bg= btn_background , fg= btn_fg, command= self.png_window)
         
-        self.add_text.grid(row= 0, column= 0, padx= x_pad, pady= y_pad)
-        self.add_png.grid(row= 0, column= 1, padx= x_pad, pady= y_pad)
-        self.add_name.grid(row= 0, column= 2, padx= x_pad, pady= y_pad)
+        self.add_text.grid(row= 0, column= 0, padx= x_pad, pady= y_pad )
+        self.add_png.grid(row= 0, column= 1, padx= x_pad, pady= y_pad )
+        self.add_name.grid(row= 0, column= 2, padx= x_pad, pady= y_pad )
     
     def text_edit_window(self):
         global edit_window

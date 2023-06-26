@@ -8,9 +8,16 @@ class Path_Selection(Frame):
         Frame.__init__(self, parent)
         super().__init__(parent)
 
-        certificate_label = Label(self, text= "Select Certificate" )
-        certificate_Input = Entry(self, width= 55)
-        certificate_button = Button(self, text= "Get Template", width= 15, command= lambda : self.AskPath( "image", "*.jpg", certificate_Input))
+        self.config(bg= '#2d2d32')
+        lebel_bg = '#2d2d32'
+        btn_background = '#007acc'
+        Entry_bg = '#2e3a3b'
+
+        btn_fg = '#ffffff'
+
+        certificate_label = Label(self, text= "Select Certificate" , bg= lebel_bg, fg= btn_fg)
+        certificate_Input = Entry(self, width= 55, bg= Entry_bg, fg= btn_fg)
+        certificate_button = Button(self, text= "Get Template", width= 15 , bg= btn_background, fg= btn_fg , command= lambda : self.AskPath( "image", "*.jpg", certificate_Input))
 
         
 
@@ -20,17 +27,17 @@ class Path_Selection(Frame):
 
 
 
-        Excel_label = Label(self, text= "Select Excel Sheet", )
-        Excel_Input = Entry(self, width= 55 )
-        Excel_button = Button(self, text= "Get Sheet" , width= 15 , command= lambda : self.AskPath( "Excel Spreadsheet", "*.xlsx", Excel_Input))
+        Excel_label = Label(self, text= "Select Excel Sheet", bg= lebel_bg , fg= btn_fg)
+        Excel_Input = Entry(self, width= 55 , bg= Entry_bg , fg= btn_fg)
+        Excel_button = Button(self, text= "Get Sheet" , width= 15 , bg= btn_background, fg= btn_fg, command= lambda : self.AskPath( "Excel Spreadsheet", "*.xlsx", Excel_Input))
 
         Excel_label.grid(row= 4, column= 0, padx= 2, pady= 2, sticky= 'W' )
         Excel_button.grid(row= 4, column= 1, padx= 3, pady= 2 , sticky= 'E')
         Excel_Input.grid(row= 5, columnspan= 2, padx= 5, pady= 5)
 
-        output_label = Label(self, text= "Select Output Folder" )
-        output_Input = Entry(self, width= 55 )
-        output_button = Button(self, text= "Get Folder" , width= 15, command= lambda: self.AskFolder( output_Input) )
+        output_label = Label(self, text= "Select Output Folder" , bg= lebel_bg, fg= btn_fg)
+        output_Input = Entry(self, width= 55 , bg= Entry_bg , fg= btn_fg)
+        output_button = Button(self, text= "Get Folder" , width= 15 , bg= btn_background, fg= btn_fg , command= lambda: self.AskFolder( output_Input) )
 
         output_label.grid(row= 6, column= 0, padx= 2, pady= 2, sticky= 'W' )
         output_button.grid(row=6, column= 1, padx= 3, pady= 2 , sticky= 'E')

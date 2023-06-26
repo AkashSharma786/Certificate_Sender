@@ -13,15 +13,25 @@ class Font_And_Color(Toplevel):
 
     def __init__(self, parent = None, generic_text = False):
         super().__init__(parent)
+
+        self.label_bg= '#2d2d32'
+        self.btn_background = '#007acc'
+        self.Entry_bg = '#2e3a3b'
+        self.ffg = '#ffffff'
         self.generic_text = generic_text
         self.parent = parent
+
+
         self.geometry('400x450')
+        self.config(bg= self.label_bg)
         self.minsize(width= 400, height= 450)
         self.protocol("WM_DELETE_WINDOW",self.close)
         self.font_list()
         self.font_and_color()
         self.textbox = None
         self.text = ''
+
+
 
         if(generic_text == False):
             self.Text_Input()
@@ -40,12 +50,12 @@ class Font_And_Color(Toplevel):
 
         x_pad = 5
         y_pad = 5
-        Text_Input_Frame = LabelFrame(self, width= 380, height= 70)
-        Text_Input_Frame.grid()
+        Text_Input_Frame = LabelFrame(self, width= 380, height= 70, bg= self.label_bg, fg= self.ffg, relief= 'flat')
+        Text_Input_Frame.grid(row= 1, column= 0)
 
-        single_line_text_label = Label(Text_Input_Frame, text= 'sentence')
-        self.single_line_text_Entry = Entry(Text_Input_Frame, width= 50)
-        Multi_line_text_Button = Button(Text_Input_Frame, width= 5, height= 3, text= 'Text', command= self.getText)
+        single_line_text_label = Label(Text_Input_Frame, text= 'sentence',bg= self.label_bg , fg= self.ffg)
+        self.single_line_text_Entry = Entry(Text_Input_Frame, width= 50, bg= self.Entry_bg, fg= self.ffg , insertbackground= 'white')
+        Multi_line_text_Button = Button(Text_Input_Frame, width= 5, height= 3, text= 'Text',bg= self.btn_background, fg= self.ffg ,command= self.getText)
 
         single_line_text_label.grid(row= 0, column= 0, padx= x_pad , pady= y_pad)
         self.single_line_text_Entry.grid(row= 1, column= 0, padx= x_pad, pady= y_pad)
@@ -63,25 +73,25 @@ class Font_And_Color(Toplevel):
     
     
     def Starting_index(self):
-        index_Frame = LabelFrame(self, width= 380, height= 30)
-        index_Frame.grid()
+        index_Frame = LabelFrame(self, width= 380, height= 30, bg= self.label_bg, fg= self.ffg, relief= 'flat')
+        index_Frame.grid(row= 1, column= 0)
 
         x_pad = 8
         y_pad = 2
 
-        text_label = Label(index_Frame, text= "Index of Entry in Spread Sheet")
+        text_label = Label(index_Frame, text= "Index of Entry in Spread Sheet", bg= self.label_bg, fg= self.ffg)
         text_label.grid(row= 0, column= 0)
 
-        row_label = Label(index_Frame , text= 'Row')
+        row_label = Label(index_Frame , text= 'Row' , bg= self.label_bg, fg= self.ffg)
         row_label.grid(row= 0, column= 1, padx= x_pad, pady= y_pad)
 
-        self.row_Entry = Entry(index_Frame , width= 5)
+        self.row_Entry = Entry(index_Frame , width= 5 , bg= self.Entry_bg, fg= self.ffg, insertbackground= 'white' )
         self.row_Entry.grid(row= 0, column= 2, padx= x_pad, pady= y_pad)
 
-        column_label = Label(index_Frame , text= 'column')
+        column_label = Label(index_Frame , text= 'column' , bg= self.label_bg, fg= self.ffg)
         column_label.grid(row= 0, column= 3, padx= x_pad, pady= y_pad)
 
-        self.column_Entry = Entry(index_Frame , width= 5)
+        self.column_Entry = Entry(index_Frame , width= 5 , bg= self.Entry_bg, fg= self.ffg , insertbackground= 'white')
         self.column_Entry.grid(row= 0, column= 4, padx= x_pad, pady= y_pad)
 
 
@@ -94,6 +104,7 @@ class Font_And_Color(Toplevel):
 
     def start(self):
         self.mainloop()
+        
 
 
     def close(self):
@@ -110,33 +121,35 @@ class Font_And_Color(Toplevel):
         y_pad = 3
         
 
-        font_frame = Frame(self, width= 350)
-        font_frame.grid(padx= x_pad, pady= y_pad)
+        font_frame = Frame(self, width= 350, bg= self.label_bg)
+        font_frame.grid(row= 0, column= 0, padx= x_pad, pady= y_pad)
 
-        font_box_label = Label(font_frame, text= 'Select a Font')
+        font_box_label = Label(font_frame, text= 'Select a Font', bg= self.label_bg, fg= self.ffg)
         font_box_label.grid(row= 0, column= 0, padx= x_pad, pady= y_pad)
         self.font_box = ttk.Combobox(font_frame, values= self.font_list , width= 35)
         self.font_box.set("select and option")
         self.font_box.grid(row= 1, column= 0, padx= x_pad, pady= y_pad)
 
 
-        font_size_label = Label(font_frame, text= 'size')
+        font_size_label = Label(font_frame, text= 'size', bg= self.label_bg, fg= self.ffg)
         font_size_label.grid(row= 0, column= 1 , padx= x_pad, pady= y_pad)
 
-        self.font_size = Entry(font_frame , width= 5)
+        self.font_size = Entry(font_frame , width= 5 , bg= self.Entry_bg, fg= self.ffg, insertbackground= 'white' )
         self.font_size.grid(row= 1, column= 1, padx= x_pad, pady= y_pad)
 
 
 
-        color_btn = Button(font_frame,text= 'color', width= 8, height= 3, command= self.set_color)
+        color_btn = Button(font_frame,text= 'color', width= 8, height= 3,  bg= self.btn_background, fg= self.ffg ,command= self.set_color)
         color_btn.grid(column= 2, row= 0, rowspan= 2, columnspan= 1, padx= x_pad, pady= y_pad, sticky= 'N')
 
     def font_preview(self):
-        preview_Frame= Frame(self)
-        preview_Frame.grid( )
 
-        self.preview_label = Label(preview_Frame)
-        self.preview_label.grid()
+        preview_Frame= LabelFrame(self, relief= 'flat', width= 380, height= 250, bg= self.label_bg, fg= self.ffg)
+        preview_Frame.pack_propagate(0)
+        preview_Frame.grid(row= 2, column= 0)
+
+        self.preview_label = Label(preview_Frame , image= None, anchor= 'ne', bg= self.label_bg, fg= self.ffg)
+        self.preview_label.pack(expand= 1)
     
     def text_preview(self):
         family = self.font_box.get()
@@ -171,24 +184,27 @@ class Font_And_Color(Toplevel):
         y_pad = 2
         but_width = 11
         but_height = 3
-        btn_frame = Frame(self, width= 390, height= 40, border= 1)
-        btn_frame.grid()
+        btn_frame = Frame(self, width= 390, height= 40, border= 1, bg= self.label_bg)
+        btn_frame.grid(row= 3, column= 0)
 
-        preview = Button(btn_frame, text= 'preview', width= but_width, height= but_height, command= self.text_preview)
+        preview = Button(btn_frame, text= 'preview', width= but_width, height= but_height, bg= self.btn_background, fg= self.ffg, command= self.text_preview)
         preview.grid(row= 0, column= 0, padx= x_pad, pady= y_pad)
 
-        select_position = Button(btn_frame, text= 'select_position', width= but_width, height= but_height, command= lambda: self.master.master.preview_frame.Create_Rectangle())
+        select_position = Button(btn_frame, text= 'select_position', width= but_width, height= but_height , bg= self.btn_background, fg= self.ffg , command= lambda: self.master.master.preview_frame.Create_Rectangle())
         select_position.grid(row= 0, column= 1, padx= x_pad, pady= y_pad)
 
-        apply = Button(btn_frame, text= 'apply', width= but_width, height= but_height, command= self.apply_font)
+        apply = Button(btn_frame, text= 'apply', width= but_width, height= but_height , bg= self.btn_background, fg= self.ffg ,   command= self.apply_font)
         apply.grid(row= 0, column= 2, padx= x_pad, pady= y_pad)
         
-        Done = Button(btn_frame, text= 'Done', width= but_width, height= but_height , command= self.Done)
+        Done = Button(btn_frame, text= 'Done', width= but_width, height= but_height , bg= '#129d00', fg= self.ffg  , command= self.Done)
         Done.grid(row= 0, column= 3, padx= x_pad, pady= y_pad)
 
     
 
     def apply_font(self):
+
+        
+
         if(self.generic_text == False):
             if(self.text == ''):
                 self.master.Generate_1_image( self.single_line_text_Entry.get())
@@ -199,9 +215,7 @@ class Font_And_Color(Toplevel):
 
     def Done(self):
 
-        
-
-        
+        self.master.Get_Name_List()
         if(self.generic_text == True):
             
             self.master.Generate_All()

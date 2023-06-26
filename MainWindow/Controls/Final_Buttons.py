@@ -14,15 +14,21 @@ class Final_Buttons( Frame ):
         
         super().__init__(parent)
         self.parent = parent
+
+        
+        self.config(bg= '#2d2d32')
+        btn_background = '#007acc'
+
+        btn_fg = '#ffffff'
         
 
 
     
-        f_btn = LabelFrame(self, width= 340, height= 200, pady= 5)
-        f_btn.grid(row= 0, column= 0, padx= 5, pady= 5)
+        f_btn = LabelFrame(self, width= 340, height= 200, pady=5, bg= '#2d2d32', relief= 'flat')
+        f_btn.grid(row= 0, column= 0,pady=5, padx= 5)
 
-        Store = Button(f_btn, text= 'Convert_pdf' , padx= 4, pady= 4 , width= 21, command= lambda: self.Convert_PDF())
-        Send = Button(f_btn, text= 'Send Email' , padx= 4, pady= 4 , width= 21, command= self.EmailWindow)
+        Store = Button(f_btn, text= 'Convert_pdf' , width= 21,  bg= btn_background , fg=  btn_fg,  command= lambda: self.Convert_PDF())
+        Send = Button(f_btn, text= 'Send Email' , width= 21, bg= '#129d00' , fg=  btn_fg,  command= self.EmailWindow)
 
 
         Store.grid(row=0, column= 0 , padx= 4, pady= 4)
