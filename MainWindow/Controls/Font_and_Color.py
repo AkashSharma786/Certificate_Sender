@@ -215,7 +215,7 @@ class Font_And_Color(Toplevel):
 
     def Done(self):
 
-        self.master.Get_Name_List()
+        
         if(self.generic_text == True):
             
             self.master.Generate_All()
