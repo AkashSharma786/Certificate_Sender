@@ -136,7 +136,9 @@ class EmailEditor(Toplevel):
             en['subject'] = self.subject
             en.set_content(self.email_body)
 
-            file_path = 'Output' + '/' + name_list[i] + self.r.get()
+            file_path = self.master.output+ '/' + name_list[i] + self.r.get()
+
+            
 
             with open(file_path, mode= 'rb') as attach_file_path:
                 data = attach_file_path.read()
