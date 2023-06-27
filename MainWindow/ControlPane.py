@@ -64,6 +64,8 @@ class Control_Pane(Frame):
 
 
         for i in range(self.sheet_row, sheet.max_row  , 1):
+            if(name == None):
+                break
             name = sheet.cell(column = self.sheet_column,  row = i  ).value
             email = sheet.cell(column = self.sheet_column +1, row = i).value
             name_list.append(name)
