@@ -11,13 +11,17 @@ class EmailEditor(Toplevel):
     def __init__(self, parent = None):
         super().__init__(parent)
         
-        self.geometry('600x650')
+        self.geometry('750x550')
         self.config(bg= '#2d2d32')
 
         self.label_bg= '#2d2d32'
         self.btn_background = '#007acc'
         self.Entry_bg = '#2e3a3b'
         self.ffg = '#ffffff'
+        self.default_email = 'techpyrates@gmail.com'
+        self.default_password = 'mjxixpmqzmnnzsru'
+        self.use_default = IntVar()
+        self.use_default.set(1)
 
 
         self.CreateInputFrame()
@@ -36,65 +40,119 @@ class EmailEditor(Toplevel):
 
 
         self.__font = Font(family='arial', size= 11, weight='normal')
-        x_pad = 5
-        y_pad = 2
+        x_pad = 0
+        y_pad = 15
         entry_width = 35
 
         
         self.r = StringVar()
         self.r.set('.pdf')
-        input = LabelFrame(self,  padx= 2,  pady= 2 , border= 0, bg= self.label_bg)
-        input.pack(padx= 2, pady= 2)
+        input = LabelFrame(self,  padx= 5,  pady= 2 , border= 0, bg= self.label_bg, width= 150, height= 200, font= self.__font)
+        input.grid(row= 0, column= 0)
 
-        radio1 = Radiobutton(input, text= 'Attach PDF', variable= self.r , value= '.pdf' , fg= self.ffg, bg= self.label_bg, activebackground= self.label_bg, selectcolor= self.label_bg, activeforeground= self.btn_background)
-        radio2 = Radiobutton(input, text= 'Attach Image', variable= self.r , value= '.jpg' ,fg= self.ffg , bg= self.label_bg, selectcolor= self.label_bg, activebackground= self.label_bg, activeforeground= self.btn_background)
+        text_label = Label(input, text= "Index of Entry in Spread Sheet", bg= self.label_bg, fg= self.ffg , font= self.__font)
+        text_label.grid(row= 0, column= 0, rowspan= 1, columnspan= 4, sticky= 'W')
 
-        radio1.grid(row= 0, column= 0)
-        radio2.grid(row= 0, column= 1)
+        row_label = Label(input , text= 'Row' , bg= self.label_bg, fg= self.ffg , font= self.__font)
+        row_label.grid(row= 1, column= 0,  pady= y_pad , sticky= 'W' )
+
+        self.row_Entry = Entry(input , width= 5 , bg= self.Entry_bg, fg= self.ffg, insertbackground= 'white', font= self.__font )
+        self.row_Entry.grid(row= 1, column=1, padx= x_pad, pady= y_pad , sticky= 'W' )
+
+        column_label = Label(input , text= 'column' , bg= self.label_bg, fg= self.ffg , font= self.__font)
+        column_label.grid(row= 1, column= 2,  pady= y_pad , sticky= 'W' )
+
+        self.column_Entry = Entry(input , width= 5 , bg= self.Entry_bg, fg= self.ffg , insertbackground= 'white' , font= self.__font)
+        self.column_Entry.grid(row= 1, column= 3, padx= x_pad, pady= y_pad , sticky= 'W' )
 
 
-        sender_Label = Label(input, text= "Enter Senders Email", border= 0,width= 20 , font= self.__font , bg= self.label_bg , fg= self.ffg)
-        sender_password_label = Label(input, text= "Enter Senders Password" , border= 0, width= 20, font= self.__font , bg= self.label_bg , fg= self.ffg)
-        Subject_label = Label(input, text=  "Subject" , border= 0, width= 60, font= self.__font, anchor= 'w' , bg= self.label_bg , fg= self.ffg)
-
-        self.sender_Email = Entry(input , width= entry_width, font= self.__font, bg= self.Entry_bg, fg= self.ffg, insertbackground= 'white')
-        self.sender_password_Entry = Entry(input , width= entry_width, font= self.__font , bg= self.Entry_bg, fg= self.ffg , insertbackground= 'white')
-        self.Subject_Entry = Entry(input ,  width= 2*entry_width + 1,font= self.__font , bg= self.Entry_bg, fg= self.ffg , insertbackground= 'white')
 
 
+        radio1 = Radiobutton(input, text= 'Attach PDF', variable= self.r , value= '.pdf' , fg= self.ffg, bg= self.label_bg, activebackground= self.label_bg, selectcolor= self.label_bg, activeforeground= self.btn_background , font= self.__font)
+        radio2 = Radiobutton(input, text= 'Attach Image', variable= self.r , value= '.jpg' ,fg= self.ffg , bg= self.label_bg, selectcolor= self.label_bg, activebackground= self.label_bg, activeforeground= self.btn_background , font= self.__font)
 
-        sender_Label.grid(row= 1, column= 0, padx= x_pad, pady= y_pad)
-        self.sender_Email.grid(row= 2, column= 0 , padx= x_pad, pady= y_pad)
+        
 
-        sender_password_label.grid(row= 1, column= 1 , padx= x_pad, pady= y_pad)
-        self.sender_password_Entry.grid(row= 2, column= 1, padx= x_pad, pady= y_pad)
+        radio1.grid(row= 2, column= 0, rowspan= 1, columnspan= 2, padx= x_pad, pady= y_pad , sticky= 'W' )
+        radio2.grid(row= 2, column= 2, rowspan= 1, columnspan= 2, padx= x_pad, pady= y_pad , sticky= 'W' )
+        
 
-        Subject_label.grid(row= 3, columnspan= 2 , padx= x_pad, pady= y_pad)
-        self.Subject_Entry.grid(row= 4, columnspan=2, padx= x_pad, pady= y_pad)
+
+        sender_Label = LabelFrame(input, text= "Enter Senders Email",  width= 150, height= 20, font= self.__font , bg= self.label_bg , fg= self.ffg , relief= 'flat')
+        sender_Label.grid(row= 3, column= 0, rowspan= 1, columnspan= 4, padx= x_pad, pady= y_pad, sticky= 'W' )
+
+        self.sender_Email = Entry(sender_Label , width= entry_width, font= self.__font, state= 'disabled', bg= self.Entry_bg, fg= self.ffg, insertbackground= 'white', disabledbackground= self.label_bg)
+        self.sender_Email.grid(row= 0, column= 0  , rowspan= 1, columnspan= 4, padx= x_pad, pady= y_pad , sticky= 'W'  )
+
+
+
+
+        sender_password_label = LabelFrame(input, text= "Enter Senders Password" ,  width= 150, height= 20 ,  font= self.__font , bg= self.label_bg , fg= self.ffg,  relief= 'flat')
+        sender_password_label.grid(row= 4, column= 0 , rowspan= 1, columnspan= 4 , padx= x_pad, pady= y_pad , sticky= 'W' )
+
+        
+        self.sender_password_Entry = Entry(sender_password_label, width= entry_width,state= 'disabled', font= self.__font , bg= self.Entry_bg, fg= self.ffg , insertbackground= 'white', disabledbackground= self.label_bg)
+        self.sender_password_Entry.grid(row= 0, column= 0 , rowspan= 1, columnspan= 4, padx= x_pad, pady= y_pad , sticky= 'W' )
+
+        default_email_checkbox = Checkbutton(input,command= self.DisableEntry , text= 'Use system email (techpyrates@gmail.com)',variable= self.use_default, onvalue= 1, offvalue= 0,  fg= self.ffg, bg= self.label_bg, activebackground= self.label_bg, selectcolor= self.label_bg)
+
+        
+
+
+        
+        
+
+        
+        
+        default_email_checkbox.grid(row= 5, column= 0 , rowspan= 1, columnspan= 4, pady= 2 , sticky= 'W' )
+
+    def DisableEntry(self):
+        if(self.use_default.get() == 1):
+            self.sender_Email.config(state= 'disabled')
+            self.sender_password_Entry.config(state= 'disabled')
+        else:
+            self.sender_Email.config(state= 'normal')
+            self.sender_password_Entry.config(state= 'normal')
+
         
     def CreateTextBox(self):
+        x_pad  = 2
+        y_pad = 2
 
-        self.Editor = Frame(self, padx= 2, pady= 2,width= 590, height= 480, bg= self.label_bg)
-        self.Editor.pack(padx= 2, pady= 2)
+        entry_width = 53
 
-        self.text_box = Text(self.Editor, width= 400, height= 480, background= self.Entry_bg, fg= self.ffg, font= self.__font, insertbackground= 'white')
+
+
+        self.Editor = Frame(self, padx= x_pad, pady= y_pad , width= 450, height= 545 , bg= self.label_bg)
+        self.Editor.grid(row= 0, column=1, rowspan= 2, columnspan= 1, padx= x_pad, pady= y_pad)
+
+        Subject_label = Label(self.Editor, text=  "Subject" , font= self.__font , bg= self.label_bg , fg= self.ffg)
+        self.Subject_Entry = Entry(self.Editor ,  width= entry_width ,font= self.__font , bg= self.Entry_bg, fg= self.ffg , insertbackground= 'white')
+
+        Subject_label.grid(row= 0, column= 0 , padx= x_pad, pady= y_pad, sticky= 'W')
+        self.Subject_Entry.grid(row= 1, column= 0, padx= x_pad, pady= y_pad , sticky= 'W')
+
+        text_box_frame = LabelFrame(self.Editor, width= 442, height= 500 , bg = self.label_bg, fg= self.ffg, relief= 'flat')
+        text_box_frame.grid(row= 2, column= 0)
+
+        self.text_box = Text(text_box_frame, background= self.Entry_bg, fg= self.ffg, font= self.__font, insertbackground= 'white')
         
-        self.text_box.place(relwidth= 0.98, relheight= 0.98, x=5, y= 5, in_= self.Editor)
+        self.text_box.place(relwidth= 0.98, relheight= 0.98)
 
     def Editorbutton(self):
-        btn_width = 10
-        x_pad = 10
-        self.Editor_button = Frame(self, width= 590, height= 90, padx= 2, pady= 2 , bg= self.label_bg)
-        self.Editor_button.pack(padx= 2, pady= 2 )
+        btn_width = 8
+        x_pad = 2
+        y_pad = 2
+        self.Editor_button = Frame(self, width= 150, height= 20, padx= x_pad, pady= y_pad , bg= self.label_bg)
+        self.Editor_button.grid(row= 1, column= 0,padx= x_pad, pady= y_pad )
 
-        Save_Draft = Button(self.Editor_button, text= "Save Draft",padx= 2, pady=2, width= btn_width ,command= self.Get_text, bg= self.btn_background, fg= self.ffg)
-        Send_Mail = Button(self.Editor_button, text= "Send Email",padx= 2, pady=2, width= btn_width, command= self.SendEmail , bg= '#129d00', fg= self.ffg)
-        Exit = Button(self.Editor_button, text= "Exit" ,padx= 2, pady=2, width= btn_width,  command= self.destroy , bg= '#c34318', fg= self.ffg)
+        Save_Draft = Button(self.Editor_button, text= "Save Draft",padx= x_pad, pady= y_pad, width= btn_width ,command= self.Get_text, bg= self.btn_background, fg= self.ffg)
+        Send_Mail = Button(self.Editor_button, text= "Send Email",padx= x_pad, pady= y_pad, width= btn_width, command= self.SendEmail , bg= '#129d00', fg= self.ffg)
+        
 
-
-        Save_Draft.grid(row= 0, column= 0,padx= x_pad, pady=2)
-        Send_Mail.grid(row= 0, column= 1,padx= x_pad, pady=2)
-        Exit.grid(row= 0, column= 2,padx= x_pad, pady=2)
+        Save_Draft.grid(row= 0, column= 0,padx= x_pad, pady= y_pad)
+        Send_Mail.grid(row= 0, column= 1,padx= x_pad, pady= y_pad)
+        
 
     def Get_text(self):
 
@@ -117,13 +175,24 @@ class EmailEditor(Toplevel):
     
     def SendEmail(self):
         self.Get_text()
-        name_list = self.master.NameList
-        email_list = self.master.email_list
+        name_list = self.master.primary_list
+
+        email_list = self.master.Get_Text_List(int(self.row_Entry.get()), int(self.column_Entry.get()))
+        
         attach_ment_folder = self.master.output
 
         print(name_list, email_list, attach_ment_folder)
 
+        if(self.use_default.get() == 1):
+            self.user_email = self.default_email
+            self.user_password = self.default_password
+        else:
+            self.user_email = self.sender_Email.get()
+            self.user_password = self.sender_password_Entry.get()
+
+
         print(self.user_email, self.user_password, self.subject, self.email_body )
+
 
 
 
@@ -156,6 +225,7 @@ class EmailEditor(Toplevel):
                 pass
 
         self.master.response.config( text = 'Mail Sent')
+        self.destroy()
 
         
 

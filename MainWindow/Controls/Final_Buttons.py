@@ -27,7 +27,7 @@ class Final_Buttons( Frame ):
         f_btn = LabelFrame(self, width= 340, height= 200, pady=5, bg= '#2d2d32', relief= 'flat')
         f_btn.grid(row= 0, column= 0,pady=5, padx= 5)
 
-        Store = Button(f_btn, text= 'Convert_pdf' , width= 21,  bg= btn_background , fg=  btn_fg,  command= lambda: self.Convert_PDF())
+        Store = Button(f_btn, text= 'Generate' , width= 21,  bg= btn_background , fg=  btn_fg,  command= lambda: self.Generate())
         Send = Button(f_btn, text= 'Send Email' , width= 21, bg= '#129d00' , fg=  btn_fg,  command= self.EmailWindow)
 
 
@@ -41,6 +41,12 @@ class Final_Buttons( Frame ):
             email_window = EmailEditor(self.parent)
         else:
             print('Window Not created')
+
+
+
+    def Generate(self):
+        self.master.Generate_All()
+        self.Convert_PDF()
     
     def Convert_PDF(self):
         output = self.master.output

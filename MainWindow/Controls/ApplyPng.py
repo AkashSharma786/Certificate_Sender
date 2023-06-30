@@ -94,6 +94,7 @@ class AddPng(Toplevel):
     def Done(self):
 
         shutil.copy('Background.jpg', 'PlainImage/')
+        shutil.copy('Background.jpg', 'PreOutput/')
         self.master.Temp_Folder = 'PlainImage/Background.jpg'
 
 

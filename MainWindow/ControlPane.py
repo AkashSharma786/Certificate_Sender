@@ -5,11 +5,14 @@ from MainWindow.Controls.Final_Buttons import *
 import openpyxl 
 from PIL import Image, ImageTk, ImageDraw , ImageFont
 from tkinter import font
+import shutil
+import os
 
 
 
 
 class Control_Pane(Frame):
+    
 
     def __init__(self, parent = None ):
         Frame.__init__(self, parent)
@@ -22,6 +25,12 @@ class Control_Pane(Frame):
         final_but = Final_Buttons(self)
 
         self.response = Label(self, text= ' ', font= (font.Font(family= 'arial', size= 20, weight= 'bold')), fg= 'white', bg= '#2d2d32', width= 15, height= 5)
+
+        img = Image.open('logo1.png')
+        self.logoimg = ImageTk.PhotoImage(img)
+
+        logo = Label(self, image= self.logoimg, border= 0)
+        
         
 
         
@@ -35,10 +44,19 @@ class Control_Pane(Frame):
         final_but.grid(row=2, column= 0, padx= x_pad, pady= y_pad)
 
         self.response.grid(row= 3, column= 0)
+        logo.grid(row= 4, column= 0)
 
         self.Edit_button = Edit_button
         self.path_selection = path_selection
         self.final_but = final_but
+        self.coordinate_list = []
+        self.Entry_list = []
+        self.primary_list = []
+        self.colour_list = []
+        self.font_size_list = []
+        self.font_family_list = []
+
+        self.count = 0
     
     def set_certificate(self, certificate = None):
         self.certificate = certificate
@@ -47,40 +65,73 @@ class Control_Pane(Frame):
         self.master.preview_frame.RenderImage(certificate)
 
         print(certificate)
-    def Set_Row_and_colunmn(self, row, column):
-        self.sheet_row = row
-        self.sheet_column = column
+    
+    
 
 
-    def Get_Name_List(self):
+
+    def Get_Text_List(self, row , column):
         print('name list generated')
         
+        
         path = self.Excel
-        name_list = []
-        email_list = []
+        text_list = []
+        
 
         work_book = openpyxl.load_workbook(path)
         sheet = work_book.active
 
 
-        for i in range(self.sheet_row, sheet.max_row  , 1):
+        for i in range(row, sheet.max_row  , 1):
 
-            name = sheet.cell(column = self.sheet_column,  row = i  ).value
-            if(name == None):
+            text = sheet.cell(column = column,  row = i  ).value
+            if(text == None):
                 break
-            email = sheet.cell(column = self.sheet_column +1, row = i).value
-            name_list.append(name)
-            email_list.append(email)
+            
+            text_list.append(text)
+            
         
-        self.NameList = name_list
-        self.email_list = email_list
+ 
+        if(self.count == 0):
+            self.primary_list = text_list
+            self.count = self.count + 1
+        else:
+            self.count = self.count + 1
         
-        return (name_list, email_list)
+        return text_list
+    
+    def make_position_list(self):
+        
+        x1, y1, x2, y2 = self.coordinate
+
+        abcissa = x1 * self.ratio
+        ordinate = y1 * self.ratio
+        self.coordinate_list.append((abcissa, ordinate))
+
+    
+    def make_Entry_list(self, text_list):
+        self.Entry_list.append(text_list)
+    
+    def make_font_style_list(self, font_style):
+        self.font_family_list.append(font_style)
+    
+    def make_font_size_list(self, font_size):
+        self.font_size_list.append(font_size)
+    
+    def make_font_color_list(self, color):
+        self.colour_list.append(color)
+
+    
+    def set_primary_list(self, text_list):
+        self.primary_list = text_list
+        print(self.primary_list)
+
+    
 
     def set_Excel(self, Excel):
         self.Excel = Excel
         
-        print(self.NameList, self.email_list)
+        
         
     
     def set_output(self, output):
@@ -153,7 +204,8 @@ class Control_Pane(Frame):
 
 
         self.master.preview_frame.RenderImage('Background.jpg')
-        
+    
+
 
     def Generate_1_image(self, text = None):
         print(self.Temp_Folder)
@@ -205,21 +257,37 @@ class Control_Pane(Frame):
 
     def Generate_All(self):
         pass
+        print(self.coordinate_list)
+        print(self.Entry_list)
+        print(self.primary_list)
+        print(self.font_family_list)
+        print(self.font_size_list)
+        print(self.colour_list)
 
-        sys_size = int(self._font[1])
-        print(sys_size)
-        __font = ImageFont.truetype(font= self.Font_folder + '/' + self._font[0] , size= int(sys_size*self.ratio))
-        print(__font)
-        print(self.NameList)
-        
-        for name in self.NameList:
-            img = Image.open(self.Temp_Folder)
-            I1 = ImageDraw.Draw(img)
-            I1.text((self.abcissa, self.ordinate), text= name ,fill= self._font[2], font= __font)
+        if(os.listdir('PreOutput/') == []):
+            shutil.copy(self.certificate, 'PreOutput/')
+            temp_image = os.listdir('PreOutput/')[0]
+            print(temp_image)
+            os.rename('PreOutput/' + temp_image, 'PreOutput/Background.jpg')
+            print(os.listdir('PreOutput/'))
 
-            img.save(self.output+ '/' + name + '.jpg')
             
-        
+        for j in range(0,len(self.Entry_list[0]), 1):
+            img = Image.open('PreOutput/Background.jpg')
+            I1 = ImageDraw.Draw(img)
+            for i  in range(0, len(self.coordinate_list), 1):
+
+                print(self.Entry_list[i][j], self.colour_list[i], self.font_family_list[i], self.font_size_list[i], self.coordinate_list[i])
+
+                __font = ImageFont.truetype(font= (self.Font_folder + '/'+ self.font_family_list[i]) , size= int( int(self.font_size_list[i]) * self.ratio))
+
+                I1.text(self.coordinate_list[i], text= self.Entry_list[i][j] ,fill= self.colour_list[i], font= __font)
+
+            img.save(self.output+ '/' + self.primary_list[j] + '.jpg')
+
+        os.remove('PreOutput/Background.jpg')
+
+
         
 
 

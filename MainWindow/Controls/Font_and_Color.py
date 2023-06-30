@@ -30,6 +30,7 @@ class Font_And_Color(Toplevel):
         self.font_and_color()
         self.textbox = None
         self.text = ''
+        self.color = '#000000'
 
 
 
@@ -78,21 +79,27 @@ class Font_And_Color(Toplevel):
 
         x_pad = 8
         y_pad = 2
+        self.is_primary = IntVar()
+        self.is_primary.set(0)
+
+        
+        self.make_primary = Checkbutton(index_Frame, text= 'Set primary list', variable= self.is_primary, onvalue= 1, offvalue= 0, bg= self.label_bg , fg= self.ffg, selectcolor= self.label_bg, activebackground= self.label_bg, activeforeground= self.btn_background)
+        self.make_primary.grid(row= 0, column= 0, rowspan= 1 , columnspan= 5, sticky= 'W')
 
         text_label = Label(index_Frame, text= "Index of Entry in Spread Sheet", bg= self.label_bg, fg= self.ffg)
-        text_label.grid(row= 0, column= 0)
+        text_label.grid(row=1, column=0)
 
         row_label = Label(index_Frame , text= 'Row' , bg= self.label_bg, fg= self.ffg)
-        row_label.grid(row= 0, column= 1, padx= x_pad, pady= y_pad)
+        row_label.grid(row=1, column= 1, padx= x_pad, pady= y_pad)
 
         self.row_Entry = Entry(index_Frame , width= 5 , bg= self.Entry_bg, fg= self.ffg, insertbackground= 'white' )
-        self.row_Entry.grid(row= 0, column= 2, padx= x_pad, pady= y_pad)
+        self.row_Entry.grid(row=1, column= 2, padx= x_pad, pady= y_pad)
 
         column_label = Label(index_Frame , text= 'column' , bg= self.label_bg, fg= self.ffg)
-        column_label.grid(row= 0, column= 3, padx= x_pad, pady= y_pad)
+        column_label.grid(row=1, column= 3, padx= x_pad, pady= y_pad)
 
         self.column_Entry = Entry(index_Frame , width= 5 , bg= self.Entry_bg, fg= self.ffg , insertbackground= 'white')
-        self.column_Entry.grid(row= 0, column= 4, padx= x_pad, pady= y_pad)
+        self.column_Entry.grid(row=1, column= 4, padx= x_pad, pady= y_pad)
 
 
 
@@ -127,7 +134,7 @@ class Font_And_Color(Toplevel):
         font_box_label = Label(font_frame, text= 'Select a Font', bg= self.label_bg, fg= self.ffg)
         font_box_label.grid(row= 0, column= 0, padx= x_pad, pady= y_pad)
         self.font_box = ttk.Combobox(font_frame, values= self.font_list , width= 35)
-        self.font_box.set("select and option")
+        self.font_box.set("arial.ttf")
         self.font_box.grid(row= 1, column= 0, padx= x_pad, pady= y_pad)
 
 
@@ -135,6 +142,7 @@ class Font_And_Color(Toplevel):
         font_size_label.grid(row= 0, column= 1 , padx= x_pad, pady= y_pad)
 
         self.font_size = Entry(font_frame , width= 5 , bg= self.Entry_bg, fg= self.ffg, insertbackground= 'white' )
+        self.font_size.insert(0,'15')
         self.font_size.grid(row= 1, column= 1, padx= x_pad, pady= y_pad)
 
 
@@ -157,8 +165,11 @@ class Font_And_Color(Toplevel):
         self.master.set_font((family, size, self.color))
 
         if(self.generic_text == True):
-            self.master.Set_Row_and_colunmn( int(self.row_Entry.get()), int(self.column_Entry.get()))
-            self.master.Get_Name_List()
+            
+            self.text_list = self.master.Get_Text_List( int(self.row_Entry.get()) , int(self.column_Entry.get()) )
+
+
+
         
 
         print(self.font_size.get())
@@ -211,16 +222,29 @@ class Font_And_Color(Toplevel):
             else:
                 self.master.Generate_1_image(self.text)
         else:
-            self.master.Generate_1_image()
+            self.master.Generate_1_image(self.text_list[0])
 
     def Done(self):
 
-        
+        shutil.copy('Background.jpg', 'PlainImage/')
         if(self.generic_text == True):
-            
-            self.master.Generate_All()
+            self.master.make_position_list()
+            self.master.make_Entry_list(self.text_list)
+            self.master.make_font_style_list(self.font_box.get())
+            self.master.make_font_size_list(self.font_size.get())
+            self.master.make_font_color_list(self.color)
+            print(self.is_primary.get())
+
+            if(self.is_primary.get() == 1):
+                self.master.set_primary_list(self.text_list)
+        
         else:
-             shutil.copy('Background.jpg', 'PlainImage/')
+            shutil.copy('Background.jpg', 'PreOutput/' )
+            
+
+            
+            
+        
         
         self.master.Temp_Folder = 'PlainImage/Background.jpg'
 

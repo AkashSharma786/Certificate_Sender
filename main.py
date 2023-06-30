@@ -14,8 +14,11 @@ from MainWindow.Preview_frame import Preview_Frame
 class ParentWindow(Tk):
     def __init__(self):
         super().__init__()
-        self.title("Gui App")
+        self.title("Tech Pyrates")
         self.geometry('1000x630')
+
+        icon = PhotoImage(file= 'AAA.png')
+        self.iconphoto(True, icon)
         self.maxsize(width= 1000, height= 630)
         self.minsize(width= 1000, height= 630)
         self.config(bg= '#2d2d30')

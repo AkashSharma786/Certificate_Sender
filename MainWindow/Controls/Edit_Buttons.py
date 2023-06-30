@@ -21,8 +21,8 @@ class EditButtons(Frame):
         btn_fg = '#ffffff'
 
         self.add_text = Button(self, text= 'Add Text', width= wide, bg= btn_background, fg= btn_fg,  command= self.text_edit_window)
-        self.add_name = Button(self, text = 'add Name', width= wide, bg= btn_background, fg= btn_fg, command= self.name_edit_window)
-        self.add_png = Button(self, text= 'Add Png', width= wide, bg= btn_background , fg= btn_fg, command= self.png_window)
+        self.add_name = Button(self, text = 'Add Multiple Text', width= wide, bg= btn_background, fg= btn_fg, command= self.name_edit_window)
+        self.add_png = Button(self, text= 'Add Logo', width= wide, bg= btn_background , fg= btn_fg, command= self.png_window)
         
         self.add_text.grid(row= 0, column= 0, padx= x_pad, pady= y_pad )
         self.add_png.grid(row= 0, column= 1, padx= x_pad, pady= y_pad )
