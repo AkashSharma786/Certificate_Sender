@@ -34,6 +34,7 @@ class Font_And_Color(Toplevel):
 
 
 
+
         if(generic_text == False):
             self.Text_Input()
         else:
@@ -44,6 +45,7 @@ class Font_And_Color(Toplevel):
 
         self.font_preview()
         self.main_but()
+        self.text_preview()
 
 
         
@@ -107,6 +109,7 @@ class Font_And_Color(Toplevel):
 
     def set_color(self):
         self.color = askcolor()[1]
+        self.text_preview()
         print(self.color)
 
     def start(self):
@@ -123,9 +126,25 @@ class Font_And_Color(Toplevel):
         fonts = os.listdir(self.font_folder)
         self.font_list = fonts
     
+
+    def setFontFamily(self, var, index , mode):
+        self.text_preview()
+
+    def setFontSize(self, var, index , mode ):
+        self.text_preview()
+    
     def font_and_color(self):
         x_pad = 10
         y_pad = 3
+
+        self.familyVar =  StringVar()
+        self.sizeVar = StringVar()
+        self.familyVar.set('arial.ttf')
+        self.sizeVar.set('15')
+
+        self.familyVar.trace_add('write', callback= self.setFontFamily)
+        self.sizeVar.trace_add('write', callback= self.setFontSize)
+        
         
 
         font_frame = Frame(self, width= 350, bg= self.label_bg)
@@ -133,7 +152,7 @@ class Font_And_Color(Toplevel):
 
         font_box_label = Label(font_frame, text= 'Select a Font', bg= self.label_bg, fg= self.ffg)
         font_box_label.grid(row= 0, column= 0, padx= x_pad, pady= y_pad)
-        self.font_box = ttk.Combobox(font_frame, values= self.font_list , width= 35)
+        self.font_box = ttk.Combobox(font_frame,textvariable= self.familyVar, values= self.font_list , width= 35)
         self.font_box.set("arial.ttf")
         self.font_box.grid(row= 1, column= 0, padx= x_pad, pady= y_pad)
 
@@ -141,8 +160,8 @@ class Font_And_Color(Toplevel):
         font_size_label = Label(font_frame, text= 'size', bg= self.label_bg, fg= self.ffg)
         font_size_label.grid(row= 0, column= 1 , padx= x_pad, pady= y_pad)
 
-        self.font_size = Entry(font_frame , width= 5 , bg= self.Entry_bg, fg= self.ffg, insertbackground= 'white' )
-        self.font_size.insert(0,'15')
+        self.font_size = Entry(font_frame , textvariable= self.sizeVar, width= 5 , bg= self.Entry_bg, fg= self.ffg, insertbackground= 'white' )
+        
         self.font_size.grid(row= 1, column= 1, padx= x_pad, pady= y_pad)
 
 
@@ -160,13 +179,12 @@ class Font_And_Color(Toplevel):
         self.preview_label.pack(expand= 1)
     
     def text_preview(self):
-        family = self.font_box.get()
-        size = int(self.font_size.get())
+
+        family = self.familyVar.get()
+        size = int(self.sizeVar.get())
+
         self.master.set_font((family, size, self.color))
 
-        if(self.generic_text == True):
-            
-            self.text_list = self.master.Get_Text_List( int(self.row_Entry.get()) , int(self.column_Entry.get()) )
 
 
 
@@ -198,11 +216,10 @@ class Font_And_Color(Toplevel):
         btn_frame = Frame(self, width= 390, height= 40, border= 1, bg= self.label_bg)
         btn_frame.grid(row= 3, column= 0)
 
-        preview = Button(btn_frame, text= 'preview', width= but_width, height= but_height, bg= self.btn_background, fg= self.ffg, command= self.text_preview)
-        preview.grid(row= 0, column= 0, padx= x_pad, pady= y_pad)
+
 
         select_position = Button(btn_frame, text= 'select_position', width= but_width, height= but_height , bg= self.btn_background, fg= self.ffg , command= lambda: self.master.master.preview_frame.Create_Rectangle())
-        select_position.grid(row= 0, column= 1, padx= x_pad, pady= y_pad)
+        select_position.grid(row= 0, column= 0, padx= x_pad, pady= y_pad)
 
         apply = Button(btn_frame, text= 'apply', width= but_width, height= but_height , bg= self.btn_background, fg= self.ffg ,   command= self.apply_font)
         apply.grid(row= 0, column= 2, padx= x_pad, pady= y_pad)
@@ -214,14 +231,16 @@ class Font_And_Color(Toplevel):
 
     def apply_font(self):
 
-        
-
         if(self.generic_text == False):
+            family = self.font_box.get()
+            size = int(self.font_size.get())
+            self.master.set_font((family, size, self.color))
             if(self.text == ''):
                 self.master.Generate_1_image( self.single_line_text_Entry.get())
             else:
                 self.master.Generate_1_image(self.text)
         else:
+            self.text_list = self.master.Get_Text_List( int(self.row_Entry.get()) , int(self.column_Entry.get()) )
             self.master.Generate_1_image(self.text_list[0])
 
     def Done(self):

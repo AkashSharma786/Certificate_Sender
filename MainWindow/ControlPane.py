@@ -82,7 +82,7 @@ class Control_Pane(Frame):
         sheet = work_book.active
 
 
-        for i in range(row, sheet.max_row  , 1):
+        for i in range(row, sheet.max_row+1  , 1):
 
             text = sheet.cell(column = column,  row = i  ).value
             if(text == None):

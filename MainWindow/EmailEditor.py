@@ -197,6 +197,8 @@ class EmailEditor(Toplevel):
 
 
 
+        server = smtplib.SMTP_SSL('smtp.gmail.com',465)    
+        server.login(self.user_email, self.user_password)
 
         for i in range(0,len(name_list), 1):
             en = EmailMessage()
@@ -217,12 +219,11 @@ class EmailEditor(Toplevel):
                     en.add_attachment(data , maintype = 'image', subtype = 'jpeg', filename = name_list[i] + '.jpg') 
 
             try:
-                with  smtplib.SMTP_SSL('smtp.gmail.com',465)  as server:   
-                
-                    server.login(self.user_email, self.user_password)
-                    server.send_message(en)
+
+                server.send_message(en)
             except:
                 pass
+        server.close()
 
         self.master.response.config( text = 'Mail Sent')
         self.destroy()
