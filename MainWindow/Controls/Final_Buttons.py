@@ -1,8 +1,11 @@
 from tkinter import *
 from MainWindow.EmailEditor import EmailEditor
+from tkinter.filedialog import asksaveasfile
+from tkinter import messagebox
 import os
 from PIL import Image
 import img2pdf
+import shutil
 
 class Final_Buttons( Frame ):
 
@@ -27,12 +30,14 @@ class Final_Buttons( Frame ):
         f_btn = LabelFrame(self, width= 340, height= 200, pady=5, bg= '#2d2d32', relief= 'flat')
         f_btn.grid(row= 0, column= 0,pady=5, padx= 5)
 
-        Store = Button(f_btn, text= 'Generate' , width= 21,  bg= btn_background , fg=  btn_fg,  command= lambda: self.Generate())
-        Send = Button(f_btn, text= 'Send Email' , width= 21, bg= '#129d00' , fg=  btn_fg,  command= self.EmailWindow)
+        Generate = Button(f_btn, text= 'Generate' , width= 13,  bg= btn_background , fg=  btn_fg,  command= lambda: self.Generate())
+        save = Button(f_btn, text= 'Save Template ', width= 13, bg= btn_background, fg= btn_fg, command= self.save_template)
+        Send = Button(f_btn, text= 'Send Email' , width= 13, bg= '#129d00' , fg=  btn_fg,  command= self.EmailWindow)
 
 
-        Store.grid(row=0, column= 0 , padx= 4, pady= 4)
-        Send.grid(row=0, column= 1 , padx= 4, pady= 4)
+        Generate.grid(row=0, column= 0 , padx= 4, pady= 4)
+        save.grid(row= 0, column=1, padx=4, pady=4)
+        Send.grid(row=0, column= 2 , padx= 4, pady= 4)
 
     def EmailWindow(self):
         global email_window
@@ -42,6 +47,20 @@ class Final_Buttons( Frame ):
         else:
             print('Window Not created')
 
+
+    def save_template(self):
+        print("save Template Clicked")
+        files = os.listdir('./PreOutput')
+        if(files == []):
+            messagebox.showerror("Error", "Nothing To Save")
+        else:
+
+            Template_folder = os.path.dirname(self.master.certificate)
+            
+            print(Template_folder)
+            save_as_path = asksaveasfile(mode= 'w', initialfile= 'Untitled', initialdir= Template_folder, defaultextension= '*.jpg', filetypes= [("Image File", "*.jpg")])
+            
+            shutil.copy('PreOutput/Background.jpg', save_as_path.name)
 
 
     def Generate(self):

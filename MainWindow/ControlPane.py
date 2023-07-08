@@ -285,14 +285,8 @@ class Control_Pane(Frame):
 
             img.save(self.output+ '/' + self.primary_list[j] + '.jpg')
 
-        os.remove('PreOutput/Background.jpg')
 
 
-        
-
-
-
-    
     def start(self):
         self.mainloop()
 
