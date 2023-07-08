@@ -62,6 +62,8 @@ class Final_Buttons( Frame ):
             
             shutil.copy('PreOutput/Background.jpg', save_as_path.name)
 
+            os.remove('PreOutput/Background.jpg')
+
 
     def Generate(self):
         self.master.Generate_All()

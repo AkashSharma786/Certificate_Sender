@@ -7,6 +7,7 @@ from PIL import Image, ImageTk, ImageDraw , ImageFont
 from tkinter import font
 import shutil
 import os
+from tkinter import messagebox
 
 
 
@@ -284,6 +285,9 @@ class Control_Pane(Frame):
                 I1.text(self.coordinate_list[i], text= self.Entry_list[i][j] ,fill= self.colour_list[i], font= __font)
 
             img.save(self.output+ '/' + self.primary_list[j] + '.jpg')
+        
+        messagebox.showinfo("Certificate Generated", "Check " + self.output)
+        
 
 
 
